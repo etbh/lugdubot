@@ -1,7 +1,8 @@
 //Paste this in the browser's console when logged into camarilla-fr.com
+var lastFetched = 0;
 window.setInterval(function(){
     var xhr = new XMLHttpRequest();
-    xhr.open('GET','http://www.camarilla-fr.com/forum/ajaxshoutbox/getAll', false);
+    xhr.open('GET','http://www.camarilla-fr.com/forum/ajaxshoutbox/' + (lastFetched ? ('getAfter/' + lastFetched) : 'getAll'), false);
     xhr.send();
     var invocation = false;
     JSON.parse(xhr.response).forEach(function(entry){
@@ -9,6 +10,7 @@ window.setInterval(function(){
             console.log("GOT IT !!!");
             invocation = true;
         }
+        lastFetched = entry.id;
     });
     if (invocation){
         xhr = new XMLHttpRequest();
