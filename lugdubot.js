@@ -16,7 +16,7 @@ window.setInterval(function(){
     var invocation = false;
     if (getNewMessages().some(function(entry){
         return entry.message == "lugdubot";
-    }){
+    })){
         xhr = new XMLHttpRequest();
         xhr.open('POST','http://www.camarilla-fr.com/forum/ajaxshoutbox/post', false);
         xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
