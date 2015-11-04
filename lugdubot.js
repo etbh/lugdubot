@@ -30,6 +30,15 @@ function getMessagesSince(time){
     return allMessages;
 }
 
+function getUser(message){
+    var parser = new DOMParser();
+    var element = parser.parseFromString(message.user, 'text/html').querySelector('a');
+    return {
+        name : element.innerText,
+        profile : element.href,
+    };
+}
+
 window.setInterval(function(){
     if (getNewMessages().some(function(entry){
         return entry.message == "lugdubot";
