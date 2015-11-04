@@ -14,6 +14,21 @@ function getNewMessages(){
     return messages;
 }
 
+function getMessagesSince(time){
+    time = new Date(time);
+    var allMessages = [];
+    var nextMessages = [];
+    while (nextMessages.length == 0 || new Date(nextMessages[0].date) >= time){
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET','http://www.camarilla-fr.com/forum/ajaxshoutbox/' + (nextMessages.length == 0 ? 'getAll' : ('getBefore/' + nextMessages[0].id) ), false);
+        xhr.send();
+        var nextMessages = JSON.parse(xhr.response);
+        for (var i = nextMessages.length-1; i>=0 && new Date(nextMessages[i].date) >= time; i--){
+            allMessages.push(nextMessages[i]);
+        }
+    }
+    return allMessages;
+}
 
 window.setInterval(function(){
     if (getNewMessages().some(function(entry){
