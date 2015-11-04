@@ -7,7 +7,11 @@ function getNewMessages(){
     xhr.open('GET','http://www.camarilla-fr.com/forum/ajaxshoutbox/' + (lastFetched ? ('getAfter/' + lastFetched) : 'getAll'), false);
     xhr.send();
     var messages = JSON.parse(xhr.response);
-    lastFetched = messages[messages.length - 1];
+    if (lastFetched == 0)
+        messages = messages.slice(-1);
+    if (messages.length > 0)
+        lastFetched = messages[messages.length - 1].id;
+    console.log(lastFetched);
     return messages;
 }
 
