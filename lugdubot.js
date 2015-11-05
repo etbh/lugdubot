@@ -43,7 +43,9 @@ function getUserCity(user){
     var xhr = new XMLHttpRequest();
     xhr.open('GET', user.profile || user, false);
     xhr.send();
-    return domParser.parseFromString(xhr.response, 'text/html').querySelector('#viewprofile .bg1 dd:nth-child(10)').textContent;
+    return [].filter.call(domParser.parseFromString(xhr.response, 'text/html').querySelectorAll('#viewprofile .bg1 dt'), function(dt){
+        return dt.textContent == "Ville :";
+    })[0].nextElementSibling.textContent;
 }
 
 window.setInterval(function(){
