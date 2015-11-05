@@ -1,5 +1,6 @@
 //Paste this in the browser's console when logged into camarilla-fr.com
 
+var domParser = new DOMParser();
 var lastFetched = 0;
 
 function getNewMessages(){
@@ -31,12 +32,18 @@ function getMessagesSince(time){
 }
 
 function getUser(message){
-    var parser = new DOMParser();
-    var element = parser.parseFromString(message.user, 'text/html').querySelector('a');
+    var element = domParser.parseFromString(message.user, 'text/html').querySelector('a');
     return {
         name : element.innerText,
         profile : element.href,
     };
+}
+
+function getUserCity(user){
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', user.profile || user, false);
+    xhr.send();
+    return domParser.parseFromString(xhr.response, 'text/html').querySelector('#viewprofile .bg1 dd:nth-child(10)').innerText;
 }
 
 window.setInterval(function(){
