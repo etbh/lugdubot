@@ -34,7 +34,7 @@ function getMessagesSince(time){
 function getUser(message){
     var element = domParser.parseFromString(message.user, 'text/html').querySelector('a');
     return {
-        name : element.innerText,
+        name : element.textContent,
         profile : element.href,
     };
 }
@@ -43,7 +43,7 @@ function getUserCity(user){
     var xhr = new XMLHttpRequest();
     xhr.open('GET', user.profile || user, false);
     xhr.send();
-    return domParser.parseFromString(xhr.response, 'text/html').querySelector('#viewprofile .bg1 dd:nth-child(10)').innerText;
+    return domParser.parseFromString(xhr.response, 'text/html').querySelector('#viewprofile .bg1 dd:nth-child(10)').textContent;
 }
 
 window.setInterval(function(){
