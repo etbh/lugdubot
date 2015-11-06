@@ -1,11 +1,14 @@
 //Paste this in the browser's console when logged into camarilla-fr.com
 
+var forum = 'http://www.camarilla-fr.com/forum/';
+var shoutbox = forum + 'ajaxshoutbox/';
+
 var domParser = new DOMParser();
 var lastFetched = 0;
 
 function getNewMessages(){
     var xhr = new XMLHttpRequest();
-    xhr.open('GET','http://www.camarilla-fr.com/forum/ajaxshoutbox/' + (lastFetched ? ('getAfter/' + lastFetched) : 'getAll'), false);
+    xhr.open('GET', shoutbox + (lastFetched ? ('getAfter/' + lastFetched) : 'getAll'), false);
     xhr.send();
     var messages = JSON.parse(xhr.response);
     if (lastFetched == 0)
@@ -21,7 +24,7 @@ function getMessagesSince(time){
     var nextMessages = [];
     while (nextMessages.length == 0 || new Date(nextMessages[nextMessages.length-1].date) >= time){
         var xhr = new XMLHttpRequest();
-        xhr.open('GET','http://www.camarilla-fr.com/forum/ajaxshoutbox/' + (nextMessages.length == 0 ? 'getAll' : ('getBefore/' + nextMessages[nextMessages.length-1].id) ), false);
+        xhr.open('GET',shoutbox + (nextMessages.length == 0 ? 'getAll' : ('getBefore/' + nextMessages[nextMessages.length-1].id) ), false);
         xhr.send();
         var nextMessages = JSON.parse(xhr.response);
         for (var i = 0; i<nextMessages.length && new Date(nextMessages[i].date) >= time; i++){
@@ -62,7 +65,7 @@ window.setInterval(function(){
     })){
         console.log('HELLO');
         var xhr = new XMLHttpRequest();
-        xhr.open('POST','http://www.camarilla-fr.com/forum/ajaxshoutbox/post', false);
+        xhr.open('POST', shoutbox + 'post', false);
         xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
         xhr.send("text_shoutbox=%5Bsize%3D50%5D%5Bb%5D%5Bcolor%3D%23FF0000%5D%5Bhighlight%3Dyellow%5DLUGDUBOT+IS+ALIVE%5B%2Fhighlight%5D%5B%2Fcolor%5D%5B%2Fb%5D%5B%2Fsize%5D&creation_time="+document.querySelector('[name=creation_time]').value+"&form_token=" + document.querySelector('[name=form_token]').value);
