@@ -2,6 +2,8 @@
 
 var forum = 'http://www.camarilla-fr.com/forum/';
 var shoutbox = forum + 'ajaxshoutbox/';
+var messagePrefix = "[size=50][b][color=#FF0000][highlight=yellow]";
+var messageSuffix = "[/highlight][/color][/b][/size]";
 
 var domParser = new DOMParser();
 var lastFetched = 0;
@@ -59,16 +61,20 @@ function getUserCity(user){
     })[0].nextElementSibling.textContent;
 }
 
+function sendMessage(text){
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', shoutbox + 'post');
+    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+    xhr.send("text_shoutbox=" + encodeURI(messagePrefix + text + messageSuffix) + "&creation_time="+document.querySelector('[name=creation_time]').value+"&form_token=" + document.querySelector('[name=form_token]').value);
+}
+
 window.setInterval(function(){
     if (getNewMessages().some(function(entry){
         return entry.message == "lugdubot";
     })){
         console.log('HELLO');
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', shoutbox + 'post', false);
-        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-        xhr.send("text_shoutbox=%5Bsize%3D50%5D%5Bb%5D%5Bcolor%3D%23FF0000%5D%5Bhighlight%3Dyellow%5DLUGDUBOT+IS+ALIVE%5B%2Fhighlight%5D%5B%2Fcolor%5D%5B%2Fb%5D%5B%2Fsize%5D&creation_time="+document.querySelector('[name=creation_time]').value+"&form_token=" + document.querySelector('[name=form_token]').value);
+        sendMessage('Bonjour, je suis lugdubot');
     }
     else
         console.log('GOT NOTHING...');
