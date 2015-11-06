@@ -39,6 +39,13 @@ function getUser(message){
     };
 }
 
+function getActiveUsersSince(time){
+    return getMessagesSince(time)
+        .map(getUser)
+        .sort(function(user1,user2){return user1.name < user2.name;})
+        .filter(function(user, i, users){return i > 0 && users[i-1].name != user.name;});
+}
+
 
 function getUserCity(user){
     var xhr = new XMLHttpRequest();
