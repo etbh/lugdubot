@@ -69,13 +69,30 @@ function sendMessage(text){
     xhr.send("text_shoutbox=" + encodeURI(messagePrefix + text + messageSuffix) + "&creation_time="+document.querySelector('[name=creation_time]').value+"&form_token=" + document.querySelector('[name=form_token]').value);
 }
 
+var triggers = [];
+
+function onMessageMatch(predicate, callback){
+    triggers.push({
+        'predicate' : predicate,
+        'callback' : callback
+    });
+}
+
+function onMessageMatchRegex(regex, callback){
+    onMessageMatch(function(entry){
+        return entry.message.search(regex) != -1;
+    },callback);
+}
+
+
+onMessageMatchRegex("^\/?[Ll]ugdubot$", function(){
+    sendMessage("bot bot bot");
+});
+
 window.setInterval(function(){
-    if (getNewMessages().some(function(entry){
-        return entry.message == "lugdubot";
-    })){
-        console.log('HELLO');
-        sendMessage('Bonjour, je suis lugdubot');
-    }
-    else
-        console.log('GOT NOTHING...');
+    getNewMessages().forEach(function(entry){
+        triggers
+            .filter(function(trigger){return trigger.predicate(entry);})
+            .forEach(function(trigger){trigger.callback(entry);});
+    });
 }, 2000);
