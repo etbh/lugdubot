@@ -2,8 +2,8 @@
 
 var forum = 'http://www.camarilla-fr.com/forum/';
 var shoutbox = forum + 'ajaxshoutbox/';
-var messagePrefix = "[size=50][b][color=#FF0000][highlight=yellow]";
-var messageSuffix = "[/highlight][/color][/b][/size]";
+var messagePrefix = "[b][color=#FF0000][highlight=yellow]";
+var messageSuffix = "[/highlight][/color][/b]";
 
 var domParser = new DOMParser();
 var lastFetched = 0;
@@ -86,7 +86,10 @@ function onMessageMatchRegex(regex, callback){
 
 
 onMessageMatchRegex("^\/?[Ll]ugdubot$", function(){
-    sendMessage("bot bot bot");
+    var userCities = getActiveUsersSince(Date.now() - 1200000).map(getUserCity);
+    console.log(userCities);
+    var percentage = Math.round(100 * userCities.filter(function(city){return city === "Lyon"}).length / userCities.length);
+    sendMessage(percentage + "% des utilisateurs actifs sont Lyonnais !");
 });
 
 window.setInterval(function(){
