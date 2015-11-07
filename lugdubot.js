@@ -2,8 +2,8 @@
 
 var forum = 'http://www.camarilla-fr.com/forum/';
 var shoutbox = forum + 'ajaxshoutbox/';
-var messagePrefix = "[b][color=#FF0000][highlight=yellow]";
-var messageSuffix = "[/highlight][/color][/b]";
+var messagePrefix = "[shadow=blue][color=#000080][font=Lucida Console]";
+var messageSuffix = "[/font][/color][/shadow]";
 
 var domParser = new DOMParser();
 var lastFetched = 0;
