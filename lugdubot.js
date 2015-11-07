@@ -83,7 +83,33 @@ function onMessageMatchRegex(regex, callback){
         return entry.message.search(regex) != -1;
     },callback);
 }
-
+onMessageMatchRegex("^\/?[Gg]renobot$", function(){
+    var userCities = getActiveUsersSince(Date.now() - 1200000).map(getUserCity);
+    console.log(userCities);
+	var citys = [];
+	var u = {};
+	var l = 0;
+ for(var i = 0, l = userCities.length; i < l; ++i){
+      if(u.hasOwnProperty(userCities[i])) {
+         continue;
+      }
+      citys.push(userCities[i]);
+      u[userCities[i]] = 1;
+   }
+	
+	
+	
+	
+	var text = "";
+for(var i = 0, l = citys.length; i < l; ++i){
+	if (i > 0){
+		text = text +  " | ";
+	}
+    var percentage = Math.round(100 * userCities.filter(function(city){return city === citys[i]}).length / userCities.length);
+		text = text + percentage + "% " + citys[i];
+	}
+	 sendMessage( text );
+});
 
 onMessageMatchRegex("^\/?[Ll]ugdubot$", function(){
     var users = getActiveUsersSince(Date.now() - 1200000);
