@@ -86,10 +86,13 @@ function onMessageMatchRegex(regex, callback){
 
 
 onMessageMatchRegex("^\/?[Ll]ugdubot$", function(){
-    var userCities = getActiveUsersSince(Date.now() - 1200000).map(getUserCity);
-    console.log(userCities);
-    var percentage = Math.round(100 * userCities.filter(function(city){return city === "Lyon"}).length / userCities.length);
-    sendMessage(percentage + "% des utilisateurs actifs sont Lyonnais !");
+    var users = getActiveUsersSince(Date.now() - 1200000);
+    console.log(users.map(function(user){return user.name;}));
+    var userCities = users.map(getUserCity);
+    var rhonalpinsRatio = userCities.filter(function(city){
+        return city === "Lyon" || city === "Grenoble"}
+    ).length / userCities.length;
+    sendMessage("Sur " + users.length + " utilisateurs actifs, " + Math.round(100*rhonalpinsRatio) + "% sont Rhônalpins.");
 });
 
 window.setInterval(function(){
