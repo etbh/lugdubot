@@ -1,6 +1,6 @@
 //Paste this in the browser's console when logged into camarilla-fr.com
 
-var forum = 'http://www.camarilla-fr.com/forum/';
+var forum = 'https://www.camarilla-fr.com/forum/';
 var shoutbox = forum + 'ajaxshoutbox/';
 var messagePrefix = "[shadow=blue][color=#000080][font=Lucida Console]";
 var messageSuffix = "[/font][/color][/shadow]";
